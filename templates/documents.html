@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documents — IR Search Engine v2</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #080c14; --surface: #0e1420; --border: #1c2333;
+            --accent: #4f9eff; --accent2: #a78bfa; --green: #34d399;
+            --red: #f87171; --yellow: #fbbf24; --text: #e2e8f0;
+            --muted: #64748b; --mono: 'JetBrains Mono', monospace;
+            --sans: 'Syne', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+        header { padding: 20px 40px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: rgba(8,12,20,0.9); position: sticky; top: 0; z-index: 100; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 800; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        nav a { color: var(--muted); text-decoration: none; font-size: 0.85rem; margin-left: 24px; transition: color 0.2s; font-weight: 600; }
+        nav a:hover { color: var(--accent); }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+        .flash { padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 0.88rem; font-family: var(--mono); }
+        .flash.success { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--green); }
+        .flash.error { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: var(--red); }
+
+        .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+        .page-header h2 { font-size: 1.5rem; font-weight: 800; }
+
+        /* Upload zone */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 14px;
+            padding: 36px;
+            text-align: center;
+            margin-bottom: 32px;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+        .upload-zone:hover { border-color: var(--accent); background: rgba(79,158,255,0.03); }
+        .upload-zone.dragover { border-color: var(--accent); background: rgba(79,158,255,0.06); }
+        .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+        .upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .upload-zone h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+        .upload-zone p { font-size: 0.82rem; color: var(--muted); margin-bottom: 16px; font-family: var(--mono); }
+        .btn { padding: 10px 22px; border: none; border-radius: 8px; font-size: 0.88rem; font-weight: 700; font-family: var(--sans); cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6, #7c3aed); color: white; }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-danger { background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.25); color: var(--red); }
+        .btn-danger:hover { background: rgba(248,113,113,0.2); }
+
+        .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+
+        /* Doc list */
+        .doc-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+        .doc-item-header { padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s; }
+        .doc-item-header:hover { background: rgba(255,255,255,0.02); }
+        .doc-meta { display: flex; align-items: center; gap: 12px; }
+        .doc-badge { background: rgba(79,158,255,0.12); border: 1px solid rgba(79,158,255,0.2); color: var(--accent); padding: 4px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: 700; font-family: var(--mono); }
+        .doc-badge.uploaded { background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.2); color: var(--accent2); }
+        .source-tag { font-size: 0.72rem; color: var(--muted); font-family: var(--mono); }
+        .doc-preview { font-size: 0.82rem; color: var(--muted); font-family: var(--mono); }
+        .doc-body { padding: 0 20px 16px; display: none; }
+        .doc-body.open { display: block; }
+        .doc-body pre { font-size: 0.82rem; font-family: var(--mono); color: var(--muted); line-height: 1.7; white-space: pre-wrap; border-top: 1px solid var(--border); padding-top: 14px; }
+        .chevron { transition: transform 0.2s; color: var(--muted); }
+        .chevron.open { transform: rotate(180deg); }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+        .empty-state .big { font-size: 2.5rem; margin-bottom: 12px; }
+
+        .stats-bar { display: flex; gap: 12px; margin-bottom: 20px; }
+        .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 0.82rem; font-family: var(--mono); }
+        .stat strong { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-icon">🔍</div>
+        IR Search Engine v2
+    </div>
+    <nav>
+        <a href="/">Search</a>
+        <a href="/documents">Documents</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% endwith %}
+
+    <div class="page-header">
+        <h2>Document Collection</h2>
+        <a href="/" style="color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:600;">← Back to Search</a>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+        <div class="stat">Total: <strong>{{ doc_list|length }}</strong></div>
+        <div class="stat">Default: <strong>{{ doc_list|selectattr('source','eq','default')|list|length }}</strong></div>
+        <div class="stat">Uploaded: <strong>{{ doc_list|selectattr('source','eq','uploaded')|list|length }}</strong></div>
+    </div>
+
+    <!-- Upload Zone -->
+    <form action="/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+        <div class="upload-zone" id="dropZone">
+            <div class="upload-icon">📂</div>
+            <h3>Upload your own documents</h3>
+            <p id="fileLabel">Drop .txt files here or click Browse to select</p>
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                <label for="fileInput" class="btn btn-primary" style="cursor:pointer;">Browse Files</label>
+                <input type="file" name="files" multiple accept=".txt" id="fileInput" onchange="handleFileSelect(this)" style="display:none;">
+                <button type="submit" class="btn" style="background:var(--green); color:#000; font-weight:800;">Upload ↑</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Document List -->
+    <div class="section-label">All Documents ({{ doc_list|length }})</div>
+
+    {% if doc_list %}
+    {% for doc in doc_list %}
+    <div class="doc-item">
+        <div class="doc-item-header" onclick="toggleDoc('doc-{{ loop.index }}', this)">
+            <div class="doc-meta">
+                <span class="doc-badge {% if doc.source == 'uploaded' %}uploaded{% endif %}">{{ doc.id }}</span>
+                <span class="source-tag">{{ '↑ uploaded' if doc.source == 'uploaded' else '● default' }}</span>
+                <span class="doc-preview">{{ doc.preview[0][:60] }}...</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+                {% if doc.source == 'uploaded' %}
+                <a href="/delete/{{ doc.id }}" class="btn btn-danger" onclick="event.stopPropagation(); return confirm('Delete {{ doc.id }}?')">Delete</a>
+                {% endif %}
+                <span class="chevron" id="chevron-doc-{{ loop.index }}">▼</span>
+            </div>
+        </div>
+        <div class="doc-body" id="doc-{{ loop.index }}">
+            <pre>{{ doc.text }}</pre>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% else %}
+    <div class="empty-state">
+        <div class="big">📭</div>
+        <p>No documents yet. Upload some .txt files above!</p>
+    </div>
+    {% endif %}
+
+</div>
+
+<script>
+function toggleDoc(id, header) {
+    const body = document.getElementById(id);
+    const chevron = document.getElementById('chevron-' + id);
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+}
+
+function handleFileSelect(input) {
+    if (input.files.length > 0) {
+        const names = Array.from(input.files).map(f => f.name).join(', ');
+        document.getElementById('fileLabel').textContent = `Selected: ${names}`;
+    }
+}
+
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    const dt = new DataTransfer();
+    Array.from(e.dataTransfer.files).forEach(f => dt.items.add(f));
+    document.getElementById('fileInput').files = dt.files;
+    handleFileSelect(document.getElementById('fileInput'));
+});
+</script>
+
+</body>
+</html>
