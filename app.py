@@ -17,11 +17,21 @@ app.secret_key = "searchengine_secret_key"
 # DIRECTORIES
 # ---------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_DIR = os.path.join(BASE_DIR, "default_docs")
-UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
 
-os.makedirs(DEFAULT_DIR, exist_ok=True)
+# Vercel environment is read-only except for /tmp
+if os.environ.get("VERCEL"):
+    DEFAULT_DIR = os.path.join(BASE_DIR, "default-docs")
+    UPLOAD_DIR = "/tmp/uploads"
+else:
+    DEFAULT_DIR = os.path.join(BASE_DIR, "default-docs")
+    UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
+
+# Ensure UPLOAD_DIR exists (works in /tmp on Vercel)
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+# Only create DEFAULT_DIR if not on Vercel (where it should be part of the repo)
+if not os.environ.get("VERCEL"):
+    os.makedirs(DEFAULT_DIR, exist_ok=True)
 
 # ---------------------------
 # STOPWORDS
