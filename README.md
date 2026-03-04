@@ -23,7 +23,7 @@ All project screenshots are stored in the `assets/` folder at the root of this r
 
 ![IR Search Engine v2 – Documents](https://github.com/Jennifer-Vesilica-Rachel/search-engine/blob/main/assets/Documents-%E2%80%94-IR-Search-Engine-v2-03-04-2026_11_27_PM.png)
 
-### Full‑page layout
+### Flask server running in PyCharm terminal
 
 ![IR Search Engine v2 – Full Page](https://github.com/Jennifer-Vesilica-Rachel/search-engine/blob/main/assets/Screenshot%202026-03-04%20225932.png)
 
