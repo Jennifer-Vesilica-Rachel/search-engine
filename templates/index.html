@@ -1,48 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IR Search Engine v2</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            --bg: #080c14;
-            --surface: #0e1420;
-            --border: #1c2333;
-            --accent: #4f9eff;
-            --accent2: #a78bfa;
-            --green: #34d399;
-            --red: #f87171;
-            --yellow: #fbbf24;
-            --text: #e2e8f0;
-            --muted: #64748b;
+            --bg: #ffffff;
+            --surface: #ffffff;
+            --border: #cccccc;
+            --accent: #2563eb;
+            --accent2: #7c3aed;
+            --green: #059669;
+            --red: #dc2626;
+            --yellow: #d97706;
+            --text: #000000;
+            --muted: #4b5563;
             --mono: 'JetBrains Mono', monospace;
-            --sans: 'Syne', sans-serif;
+            --sans: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: var(--sans);
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            background-image: radial-gradient(ellipse at 20% 50%, rgba(79,158,255,0.04) 0%, transparent 60%),
-                              radial-gradient(ellipse at 80% 20%, rgba(167,139,250,0.04) 0%, transparent 60%);
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(37, 99, 235, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(124, 58, 237, 0.06) 0%, transparent 60%);
         }
 
+        /* Header */
         header {
             padding: 20px 40px;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(8,12,20,0.9);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
         }
 
         .logo {
@@ -52,14 +62,19 @@
             font-size: 1.1rem;
             font-weight: 800;
             letter-spacing: -0.5px;
+            color: var(--text);
         }
 
         .logo-icon {
-            width: 32px; height: 32px;
+            width: 32px;
+            height: 32px;
             background: linear-gradient(135deg, var(--accent), var(--accent2));
             border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 0.9rem;
+            color: white;
         }
 
         nav a {
@@ -71,21 +86,48 @@
             font-weight: 600;
             letter-spacing: 0.5px;
         }
-        nav a:hover { color: var(--accent); }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
 
         /* Flash messages */
-        .flash { padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 0.88rem; font-family: var(--mono); }
-        .flash.success { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--green); }
-        .flash.error { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: var(--red); }
-        .flash.warning { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); color: var(--yellow); }
+        .flash {
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.88rem;
+            font-family: var(--mono);
+        }
 
-        /* Hero search */
+        .flash.success {
+            background: rgba(5, 150, 105, 0.08);
+            border: 1px solid rgba(5, 150, 105, 0.25);
+            color: var(--green);
+        }
+
+        .flash.error {
+            background: rgba(220, 38, 38, 0.08);
+            border: 1px solid rgba(220, 38, 38, 0.25);
+            color: var(--red);
+        }
+
+        .flash.warning {
+            background: rgba(217, 119, 6, 0.08);
+            border: 1px solid rgba(217, 119, 6, 0.25);
+            color: var(--yellow);
+        }
+
+        /* Hero */
         .hero {
             text-align: center;
             padding: 48px 20px 40px;
-            position: relative;
         }
 
         .hero h1 {
@@ -93,8 +135,9 @@
             font-weight: 800;
             letter-spacing: -1px;
             margin-bottom: 12px;
-            background: linear-gradient(135deg, #fff 30%, var(--accent) 70%, var(--accent2));
+            background: linear-gradient(135deg, var(--text) 30%, var(--accent) 70%, var(--accent2));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1.1;
         }
@@ -105,27 +148,7 @@
             margin-bottom: 36px;
         }
 
-        .doc-count-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(79,158,255,0.1);
-            border: 1px solid rgba(79,158,255,0.2);
-            color: var(--accent);
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-family: var(--mono);
-            margin-bottom: 28px;
-        }
-
-        .search-box {
-            display: flex;
-            gap: 10px;
-            max-width: 620px;
-            margin: 0 auto;
-        }
-
+        /* Inputs */
         .search-box input {
             flex: 1;
             padding: 16px 20px;
@@ -141,334 +164,570 @@
 
         .search-box input:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(79,158,255,0.1);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
-        .search-box input::placeholder { color: var(--muted); }
-
-        .btn {
-            padding: 16px 28px;
-            border: none;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            font-family: var(--sans);
-            cursor: pointer;
-            transition: all 0.2s;
-            letter-spacing: 0.3px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #7c3aed);
-            color: white;
-        }
-
-        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(79,158,255,0.25); }
-
-        .suggestions {
-            display: flex; flex-wrap: wrap; gap: 8px;
-            justify-content: center; margin-top: 18px;
-        }
-
-        .suggestion {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--muted);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: var(--mono);
-        }
-        .suggestion:hover { border-color: var(--accent); color: var(--accent); }
-
-        /* Results */
-        .query-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; align-items: center; }
-        .tag-label { font-size: 0.78rem; color: var(--muted); }
-        .tag {
-            background: rgba(79,158,255,0.12);
-            border: 1px solid rgba(79,158,255,0.25);
-            color: var(--accent);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-family: var(--mono);
-        }
-
-        .result-banner {
-            padding: 16px 20px;
-            border-radius: 10px;
-            margin-bottom: 28px;
-            font-size: 0.9rem;
-            font-family: var(--mono);
-        }
-        .result-banner.success { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); color: var(--green); }
-        .result-banner.warning { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); color: var(--yellow); }
-
-        .section-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 14px;
-        }
-
-        /* Ranking cards */
-        .ranking-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-
-        .doc-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px 16px;
-            text-align: center;
-            transition: all 0.2s;
-        }
-        .doc-card:hover { transform: translateY(-2px); border-color: #2d3748; }
-        .doc-card.top { border-color: var(--green); background: rgba(52,211,153,0.06); }
-
-        .doc-card .doc-id { font-size: 1.3rem; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
-        .doc-card .score { font-size: 1.5rem; font-weight: 800; color: var(--text); font-family: var(--mono); }
-        .doc-card.top .score { color: var(--green); }
-        .doc-card .score-label { font-size: 0.65rem; color: var(--muted); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
-        .top-badge { display: inline-block; background: var(--green); color: #000; font-size: 0.6rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; margin-top: 6px; letter-spacing: 0.5px; }
-        .uploaded-badge { font-size: 0.65rem; color: var(--accent2); margin-top: 4px; font-family: var(--mono); }
-
-        /* Tables */
-        .tables-grid { display: grid; gap: 20px; }
-
+        /* Cards */
+        .doc-card,
         .table-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
+        }
+
+        .doc-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .doc-card.top {
+            border-color: var(--green);
+            background: rgba(5, 150, 105, 0.05);
+        }
+
+        /* Tables */
+        th {
+            padding: 9px 16px;
+            background: #f1f5f9;
+            color: var(--muted);
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--mono);
+        }
+
+        td {
+            padding: 9px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            font-family: var(--mono);
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        /* Missing UI Classes */
+        .btn {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            font-family: var(--sans);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .doc-count-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tag-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .suggestion {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 4px 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .suggestion:hover {
+            background: var(--surface);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .query-tags {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .tag {
+            background: #e0e7ff;
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .result-banner {
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            font-size: 0.95rem;
+        }
+
+        .result-banner.success {
+            background: #ecfdf5;
+            color: var(--green);
+            border: 1px solid #a7f3d0;
+        }
+
+        .result-banner.warning {
+            background: #fffbeb;
+            color: var(--yellow);
+            border: 1px solid #fde68a;
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 16px;
+            margin-top: 40px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .ranking-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            margin-bottom: 40px;
+        }
+
+        .doc-card {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .doc-id {
+            font-size: 1.1rem;
+            font-weight: 800;
+            font-family: var(--mono);
+            margin-bottom: 12px;
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .score-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .uploaded-badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            background: #f3e8ff;
+            color: var(--accent2);
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .top-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--green);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tables-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .table-card {
             overflow: hidden;
         }
 
         .table-head {
-            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
             border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; gap: 10px;
+            background: #f8fafc;
         }
 
         .table-icon {
-            width: 30px; height: 30px;
-            border-radius: 7px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.85rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
         }
 
-        .table-head h3 { font-size: 0.9rem; font-weight: 700; }
-        .table-head p { font-size: 0.75rem; color: var(--muted); margin-top: 1px; }
+        .table-head h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
 
-        .table-scroll { overflow-x: auto; }
+        .table-head p {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
 
-        table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-        th { padding: 9px 16px; background: rgba(255,255,255,0.02); color: var(--muted); text-align: left; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); font-family: var(--mono); }
-        td { padding: 9px 16px; border-bottom: 1px solid rgba(28,35,51,0.5); color: var(--muted); font-family: var(--mono); }
-        tr:last-child td { border-bottom: none; }
-        tr:hover td { background: rgba(255,255,255,0.01); }
+        .table-scroll {
+            overflow-x: auto;
+            padding: 1px;
+        }
 
-        .hl { color: var(--accent) !important; font-weight: 700; }
-        .zero { color: #1c2333 !important; }
-        .doc-col { color: var(--accent2) !important; font-weight: 700; }
-        .term-col { color: var(--yellow) !important; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
 
-        /* Empty state */
-        .empty { text-align: center; padding: 80px 20px; }
-        .empty .big { font-size: 3rem; margin-bottom: 16px; }
-        .empty h3 { font-size: 1.1rem; color: var(--muted); margin-bottom: 8px; }
-        .empty p { font-size: 0.85rem; color: var(--muted); opacity: 0.6; }
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            margin-top: 40px;
+        }
+
+        .empty .big {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        h3 {
+            color: var(--text);
+        }
+
+        /* Utility colors */
+        .hl {
+            color: var(--accent) !important;
+            font-weight: 700;
+        }
+
+        .zero {
+            color: #94a3b8 !important;
+        }
+
+        .doc-col {
+            color: var(--accent2) !important;
+            font-weight: 700;
+        }
+
+        .term-col {
+            color: var(--yellow) !important;
+            font-weight: 600;
+        }
     </style>
 </head>
+
 <body>
 
-<header>
-    <div class="logo">
-        <div class="logo-icon">🔍</div>
-        IR Search Engine v2
-    </div>
-    <nav>
-        <a href="/">Search</a>
-        <a href="/documents">Documents</a>
-    </nav>
-</header>
-
-<div class="container">
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% for category, message in messages %}
-    <div class="flash {{ category }}">{{ message }}</div>
-    {% endfor %}
-    {% endwith %}
-
-    <!-- Hero -->
-    <div class="hero">
-        <h1>Inverted Index<br>+ TF-IDF Search</h1>
-        <p>Search across your documents using cosine similarity ranking</p>
-        <div class="doc-count-badge">
-            📄 {{ doc_count }} document{{ 's' if doc_count != 1 else '' }} indexed
+    <header>
+        <div class="logo">
+            <div class="logo-icon">🔍</div>
+            IR Search Engine v2
         </div>
-        <form class="search-box" method="POST">
-            <input type="text" name="query" placeholder="Enter your search query..." value="{{ query_input }}" autofocus>
-            <button class="btn btn-primary" type="submit">Search</button>
-        </form>
-        {% if not results %}
-        <div class="suggestions">
-            <span class="tag-label">Try:</span>
-            {% for q in ["data processing", "tree structure", "newbie book", "machine learning", "data science"] %}
-            <button class="suggestion" onclick="document.querySelector('input[name=query]').value='{{ q }}'">{{ q }}</button>
+        <nav>
+            <a href="/">Search</a>
+            <a href="/documents">Documents</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endwith %}
+
+        <!-- Hero -->
+        <div class="hero">
+            <h1>Inverted Index<br>+ TF-IDF Search</h1>
+            <p>Search across your documents using cosine similarity ranking</p>
+            <div class="doc-count-badge">
+                📄 {{ doc_count }} document{{ 's' if doc_count != 1 else '' }} indexed
+            </div>
+            <form class="search-box" method="POST">
+                <input type="text" name="query" placeholder="Enter your search query..." value="{{ query_input }}"
+                    autofocus>
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+            {% if not results %}
+            <div class="suggestions">
+                <span class="tag-label">Try:</span>
+                {% for q in ["data processing", "tree structure", "newbie book", "machine learning", "data science"] %}
+                <button class="suggestion" onclick="document.querySelector('input[name=query]').value='{{ q }}'">{{ q
+                    }}</button>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        {% if results %}
+
+        <!-- Query terms -->
+        <div class="query-tags">
+            <span class="tag-label">Query terms:</span>
+            {% for t in query_terms %}<span class="tag">{{ t }}</span>{% endfor %}
+            {% if not query_terms %}<span style="color:var(--red); font-size:0.85rem; font-family:var(--mono);">All
+                terms were stopwords.</span>{% endif %}
+        </div>
+
+        <!-- Result banner -->
+        {% if results.best_score == 0 %}
+        <div class="result-banner warning">⚠ {{ results.result_msg }}</div>
+        {% else %}
+        <div class="result-banner success">✓ {{ results.result_msg }}</div>
+        {% endif %}
+
+        <!-- Ranking -->
+        <div class="section-label">Document Ranking</div>
+        <div class="ranking-grid">
+            {% for doc_id, score, source in results.ranked %}
+            <div class="doc-card {% if score == results.best_score and score > 0 %}top{% endif %}">
+                <div class="doc-id">{{ doc_id }}</div>
+                <div class="score">{{ score }}</div>
+                <div class="score-label">Cosine Sim</div>
+                {% if source == "uploaded" %}<div class="uploaded-badge">↑ uploaded</div>{% endif %}
+                {% if score == results.best_score and score > 0 %}<div><span class="top-badge">TOP</span></div>{% endif
+                %}
+            </div>
             {% endfor %}
         </div>
+
+        <!-- Tables -->
+        {% if tables %}
+        <div class="section-label">Calculation Tables</div>
+        <div class="tables-grid">
+
+            <!-- Inverted Index -->
+            <div class="table-card">
+                <div class="table-head">
+                    <div class="table-icon" style="background:rgba(79,158,255,0.12)">📑</div>
+                    <div>
+                        <h3>Inverted Index</h3>
+                        <p>Documents containing each query term</p>
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Term</th>
+                                <th>Document IDs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for term, docs in tables.inv_index %}
+                            <tr>
+                                <td class="term-col">{{ term }}</td>
+                                <td class="hl">{{ docs }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TF -->
+            <div class="table-card">
+                <div class="table-head">
+                    <div class="table-icon" style="background:rgba(167,139,250,0.12)">📊</div>
+                    <div>
+                        <h3>Term Frequency (TF)</h3>
+                        <p>Raw count per document</p>
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Document</th>{% for t in tables.display_terms %}<th>{{ t }}</th>{% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc_id, tf_row in tables.tf %}
+                            <tr>
+                                <td class="doc-col">{{ doc_id }}</td>
+                                {% for term, val in tf_row %}<td class="{% if val > 0 %}hl{% else %}zero{% endif %}">{{
+                                    val }}</td>{% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- IDF -->
+            <div class="table-card">
+                <div class="table-head">
+                    <div class="table-icon" style="background:rgba(251,191,36,0.12)">📐</div>
+                    <div>
+                        <h3>IDF Table</h3>
+                        <p>IDF = log₁₀(N / DF), N = {{ doc_count }}</p>
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Term</th>
+                                <th>DF</th>
+                                <th>IDF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for term, df, idf in tables.idf %}
+                            <tr>
+                                <td class="term-col">{{ term }}</td>
+                                <td>{{ df }}</td>
+                                <td class="hl">{{ idf }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TF-IDF -->
+            <div class="table-card">
+                <div class="table-head">
+                    <div class="table-icon" style="background:rgba(52,211,153,0.12)">⚡</div>
+                    <div>
+                        <h3>TF-IDF Weights</h3>
+                        <p>TF × IDF per document</p>
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Document</th>{% for t in tables.display_terms %}<th>{{ t }}</th>{% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc_id, tfidf_row in tables.tfidf %}
+                            <tr>
+                                <td class="doc-col">{{ doc_id }}</td>
+                                {% for term, val in tfidf_row %}<td class="{% if val > 0 %}hl{% else %}zero{% endif %}">
+                                    {{ val }}</td>{% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Query Vector -->
+            <div class="table-card">
+                <div class="table-head">
+                    <div class="table-icon" style="background:rgba(248,113,113,0.12)">🎯</div>
+                    <div>
+                        <h3>Query TF-IDF Vector</h3>
+                        <p>Query as a weighted vector</p>
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Source</th>{% for t in tables.display_terms %}<th>{{ t }}</th>{% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="doc-col">Query</td>
+                                {% for term, val in tables.query_vec %}<td
+                                    class="{% if val > 0 %}hl{% else %}zero{% endif %}">{{ val }}</td>{% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
         {% endif %}
+
+        {% else %}
+        <div class="empty">
+            <div class="big">🔎</div>
+            <h3>Enter a query to begin searching</h3>
+            <p>{{ doc_count }} documents indexed · {{ vocab_size }} unique terms after stopword removal</p>
+        </div>
+        {% endif %}
+
     </div>
 
-    {% if results %}
-
-    <!-- Query terms -->
-    <div class="query-tags">
-        <span class="tag-label">Query terms:</span>
-        {% for t in query_terms %}<span class="tag">{{ t }}</span>{% endfor %}
-        {% if not query_terms %}<span style="color:var(--red); font-size:0.85rem; font-family:var(--mono);">All terms were stopwords.</span>{% endif %}
-    </div>
-
-    <!-- Result banner -->
-    {% if results.best_score == 0 %}
-    <div class="result-banner warning">⚠ {{ results.result_msg }}</div>
-    {% else %}
-    <div class="result-banner success">✓ {{ results.result_msg }}</div>
-    {% endif %}
-
-    <!-- Ranking -->
-    <div class="section-label">Document Ranking</div>
-    <div class="ranking-grid">
-        {% for doc_id, score, source in results.ranked %}
-        <div class="doc-card {% if score == results.best_score and score > 0 %}top{% endif %}">
-            <div class="doc-id">{{ doc_id }}</div>
-            <div class="score">{{ score }}</div>
-            <div class="score-label">Cosine Sim</div>
-            {% if source == "uploaded" %}<div class="uploaded-badge">↑ uploaded</div>{% endif %}
-            {% if score == results.best_score and score > 0 %}<div><span class="top-badge">TOP</span></div>{% endif %}
-        </div>
-        {% endfor %}
-    </div>
-
-    <!-- Tables -->
-    {% if tables %}
-    <div class="section-label">Calculation Tables</div>
-    <div class="tables-grid">
-
-        <!-- Inverted Index -->
-        <div class="table-card">
-            <div class="table-head">
-                <div class="table-icon" style="background:rgba(79,158,255,0.12)">📑</div>
-                <div><h3>Inverted Index</h3><p>Documents containing each query term</p></div>
-            </div>
-            <div class="table-scroll"><table>
-                <thead><tr><th>Term</th><th>Document IDs</th></tr></thead>
-                <tbody>
-                {% for term, docs in tables.inv_index %}
-                <tr><td class="term-col">{{ term }}</td><td class="hl">{{ docs }}</td></tr>
-                {% endfor %}
-                </tbody>
-            </table></div>
-        </div>
-
-        <!-- TF -->
-        <div class="table-card">
-            <div class="table-head">
-                <div class="table-icon" style="background:rgba(167,139,250,0.12)">📊</div>
-                <div><h3>Term Frequency (TF)</h3><p>Raw count per document</p></div>
-            </div>
-            <div class="table-scroll"><table>
-                <thead><tr><th>Document</th>{% for t in tables.display_terms %}<th>{{ t }}</th>{% endfor %}</tr></thead>
-                <tbody>
-                {% for doc_id, tf_row in tables.tf %}
-                <tr>
-                    <td class="doc-col">{{ doc_id }}</td>
-                    {% for term, val in tf_row %}<td class="{% if val > 0 %}hl{% else %}zero{% endif %}">{{ val }}</td>{% endfor %}
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table></div>
-        </div>
-
-        <!-- IDF -->
-        <div class="table-card">
-            <div class="table-head">
-                <div class="table-icon" style="background:rgba(251,191,36,0.12)">📐</div>
-                <div><h3>IDF Table</h3><p>IDF = log₁₀(N / DF), N = {{ doc_count }}</p></div>
-            </div>
-            <div class="table-scroll"><table>
-                <thead><tr><th>Term</th><th>DF</th><th>IDF</th></tr></thead>
-                <tbody>
-                {% for term, df, idf in tables.idf %}
-                <tr><td class="term-col">{{ term }}</td><td>{{ df }}</td><td class="hl">{{ idf }}</td></tr>
-                {% endfor %}
-                </tbody>
-            </table></div>
-        </div>
-
-        <!-- TF-IDF -->
-        <div class="table-card">
-            <div class="table-head">
-                <div class="table-icon" style="background:rgba(52,211,153,0.12)">⚡</div>
-                <div><h3>TF-IDF Weights</h3><p>TF × IDF per document</p></div>
-            </div>
-            <div class="table-scroll"><table>
-                <thead><tr><th>Document</th>{% for t in tables.display_terms %}<th>{{ t }}</th>{% endfor %}</tr></thead>
-                <tbody>
-                {% for doc_id, tfidf_row in tables.tfidf %}
-                <tr>
-                    <td class="doc-col">{{ doc_id }}</td>
-                    {% for term, val in tfidf_row %}<td class="{% if val > 0 %}hl{% else %}zero{% endif %}">{{ val }}</td>{% endfor %}
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table></div>
-        </div>
-
-        <!-- Query Vector -->
-        <div class="table-card">
-            <div class="table-head">
-                <div class="table-icon" style="background:rgba(248,113,113,0.12)">🎯</div>
-                <div><h3>Query TF-IDF Vector</h3><p>Query as a weighted vector</p></div>
-            </div>
-            <div class="table-scroll"><table>
-                <thead><tr><th>Source</th>{% for t in tables.display_terms %}<th>{{ t }}</th>{% endfor %}</tr></thead>
-                <tbody>
-                <tr>
-                    <td class="doc-col">Query</td>
-                    {% for term, val in tables.query_vec %}<td class="{% if val > 0 %}hl{% else %}zero{% endif %}">{{ val }}</td>{% endfor %}
-                </tr>
-                </tbody>
-            </table></div>
-        </div>
-
-    </div>
-    {% endif %}
-
-    {% else %}
-    <div class="empty">
-        <div class="big">🔎</div>
-        <h3>Enter a query to begin searching</h3>
-        <p>{{ doc_count }} documents indexed · {{ vocab_size }} unique terms after stopword removal</p>
-    </div>
-    {% endif %}
-
-</div>
-
-<script>
-document.querySelectorAll('.suggestion').forEach(btn => {
-    btn.addEventListener('click', () => setTimeout(() => btn.closest('form') || document.querySelector('.search-box').submit(), 100));
-});
-</script>
+    <script>
+        document.querySelectorAll('.suggestion').forEach(btn => {
+            btn.addEventListener('click', () => setTimeout(() => btn.closest('form') || document.querySelector('.search-box').submit(), 100));
+        });
+    </script>
 
 </body>
+
 </html>
