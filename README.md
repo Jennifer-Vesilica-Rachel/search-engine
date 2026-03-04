@@ -51,4 +51,4 @@ Open: **http://127.0.0.1:5000**
 
 ## Deployment
 
-Deployed on PythonAnywhere: ` https://search-engine-self-sigma.vercel.app/`
+Deployed on Vercel: ` https://search-engine-self-sigma.vercel.app/`
