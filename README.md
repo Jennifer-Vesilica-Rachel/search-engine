@@ -15,9 +15,17 @@ It indexes a collection of documents (default + user‑uploaded) using an **Inve
 
 All project screenshots are stored in the `assets/` folder at the root of this repository (for example `assets/homepage.png`, `assets/documents.png`, etc.).
 
-Main search interface:
+### Main search interface
 
-![IR Search Engine v2 UI](assets/homepage.png)
+![IR Search Engine v2 – Search](https://github.com/Jennifer-Vesilica-Rachel/search-engine/blob/main/assets/IR-Search-Engine-v2-03-04-2026_11_23_PM.png)
+
+### Documents view
+
+![IR Search Engine v2 – Documents](https://github.com/Jennifer-Vesilica-Rachel/search-engine/blob/main/assets/Documents-%E2%80%94-IR-Search-Engine-v2-03-04-2026_11_27_PM.png)
+
+### Full‑page layout
+
+![IR Search Engine v2 – Full Page](https://github.com/Jennifer-Vesilica-Rachel/search-engine/blob/main/assets/Screenshot%202026-03-04%20225932.png)
 
 ## Project Structure
 
