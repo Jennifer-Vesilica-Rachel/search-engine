@@ -32,7 +32,7 @@ search_engine_v2/
 ## Installation
 
 ```bash
-git clone https://github.com/<your-username>/search-engine-v2.git
+git clone https://github.com/Jennifer-Vesilica-Rachel/search-engine.git
 cd search-engine-v2
 pip install -r requirements.txt
 python app.py
@@ -51,4 +51,4 @@ Open: **http://127.0.0.1:5000**
 
 ## Deployment
 
-Deployed on PythonAnywhere: `https://<username>.pythonanywhere.com`
+Deployed on PythonAnywhere: ` https://search-engine-self-sigma.vercel.app/`
